@@ -1,9 +1,80 @@
-<!DOCTYPE html><html lang="bn"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>বাংলাদেশ নির্বাচন কমিশন</title><style>body{font-family:Arial,sans-serif;margin:0;background:#f6f7f8;color:#222}header{background:#003366;color:#fff;padding:12px;text-align:center}.logo{width:140px;position:fixed;top:8px;left:15px;z-index:1000;background:rgba(255,255,255,.95);padding:6px;border-radius:6px;box-shadow:0 3px 10px rgba(0,0,0,.3)}.container{max-width:1100px;margin:80px auto 30px;padding:15px}.login-box,.dashboard,.page-section{background:#fff;padding:20px;border-radius:6px;box-shadow:0 3px 12px rgba(0,0,0,.1);margin:15px auto}h2{color:#003366}input,button{padding:8px;margin:5px 0;border:1px solid #aaa;background:#fff;border-radius:4px;font-size:14px;width:100%;box-sizing:border-box}button{background:#003366;color:#fff;border:none;cursor:pointer;font-size:14px;padding:8px}button:hover{background:#001f3f}.hidden{display:none}.side-menu{display:flex;justify-content:center;gap:18px;margin:18px 0}.side-btn{background:#005588;color:#fff;padding:9px 22px;font-size:15px;border-radius:5px;cursor:pointer;min-width:180px}.side-btn:hover{background:#004070}.back-btn{background:#0b63b6;width:auto;padding:7px 06px}.loader{text-align:center;padding:35px;font-size:17px;color:#003366;font-weight:700}.loader::after{content:" লোড হচ্ছে...";animation:pulse 1.5s infinite}@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}.eye-icon{cursor:pointer;font-size:18px;color:#003366}.demo-msg{color:red;font-weight:700;font-size:19px;text-align:center;margin:18px;padding:10px;background:#ffe6e6;border:2px solid red;border-radius:5px}*{box-sizing:border-box}.top{display:flex;padding:12px 14px;gap:12px;align-items:flex-start}.filters{flex:1;border-right:1px solid #e6e6e6;padding-right:14px}.fields-panel{width:220px}.filters h3{margin:0 0 8px;font-size:14px;color:#0b3a6e}.filter-row{display:flex;gap:8px;align-items:center;margin-bottom:8px;flex-wrap:nowrap}.filter-row input[type=checkbox]{width:18px;height:18px;margin:0}.field-label{width:105px;font-size:13px;color:#333;white-space:nowrap}.filter-row select,.filter-row input[type=text]{padding:6px 8px;border:1px solid #aaa;background:#fff;border-radius:4px;min-width:110px;font-size:13px}.filter-row select.small{width:55px}.search-btn{.display:inline-block;
-margin-top:4px;
-padding:4px 8px;
-width:60px;
-border:1px solid #0b63b6;
-background:#0b63b6;
-border-radius:3px;
-cursor:pointer;
-font-size:12px;}.panel{background:#f3f5f6;border:1px solid #ddd;padding:7px;border-radius:3px;height:80px;overflow:auto}.panel h4{margin:3px 0 5px;font-size:12px}.panel p{margin:4px 0;color:#0b63b6;font-size:12px}.table-wrap{padding:4px 8px 16px}table{width:100%;border-collapse:collapse;background:#fff}thead th{background:#f7f7f7;padding:10px 8px;text-align:left;border-bottom:1px solid #e6e6e6;font-weight:700;color:#222;font-size:13px}tbody td{padding:10px 8px;border-bottom:1px solid #f0f0f0;vertical-align:middle;font-size:13px}tbody tr:nth-child(odd){background:#fff}.muted{color:#0b63b6}.chip{display:inline-block;padding:4px 8px;border-radius:10px;font-size:11px;border:1px solid #d0d0d0;background:#fff}.chip.completed{background:#f2fff6;border-color:#9fe6b8;color:#2f7f3a}.footer{display:flex;justify-content:space-between;align-items:center;padding:8px 14px;background:#fafafa;border-top:1px solid #eee;font-size:12px}.page-btn{padding:4px 8px;border-radius:3px;border:1px solid #cfcfcf;background:#fff;min-width:30px;font-size:12px}.page-btn.active{background:#0b63b6;color:#fff;border-color:#0b63b6}footer{background:#003366;color:#fff;text-align:center;padding:10px;margin-top:25px}@media (max-width:900px){.top{flex-direction:column}.fields-panel{width:100%}.filters{border-right:none;padding-right:0}.filter-row{flex-wrap:wrap;gap:6px}.field-label{width:auto}}</style></head><body><img src="https://upload.wikimedia.org/wikipedia/commons/9/9a/Election_Commission_Logo.svg" alt="লোগো"><header><h2>বাংলাদেশ নির্বাচন কমিশন</h2><p>বাংলাদেশ নির্বাচন কমিশন ডাটাবেইজ</p></header><div class="container"><div id="loginPage"><div class="login-box"><h2>লগইন করুন</h2><input type="text" id="userId" placeholder="User ID " required><input type="password" id="password" placeholder="Password " required><button onclick="checkLogin()">লগইন</button><div id="otpSection" class="hidden"><input type="text" id="otpInput" placeholder="ওটিপি " maxlength="6"><button onclick="verifyOTP()">যাচাই করুন</button><div style="color:#003366;font-weight:700;text-align:center;margin-top:8px;">018******34 এই নম্বরে ওটিপি পাঠানো হয়েছে। অপেক্ষা করুন।</div></div></div></div><div id="dashboard" class="hidden"><div class="dashboard"><h2>স্বাগতম ড্যাশবোর্ডে</h2><p>আপনি সফলভাবে লগইন করেছেন।</p><div class="side-menu"><button class="side-btn" onclick="openPage('nidSearch')">NID Search</button><button class="side-btn" onclick="openPage('cardApp')">Card Application</button></div></div></div><div id="nidSearchPage" class="page-section hidden"><button class="back-btn" onclick="backToDashboard()">← ফিরুন</button><h2>NID Search</h2><input type="text" id="nidSearchInput" placeholder="১০/১৭ ডিজিট NID" maxlength="17"><button onclick="performNIDSearch()">সার্চ</button><div id="searchLoader" class="loader hidden"></div></div><div id="cardAppPage" class="page-section hidden"><button class="back-btn" onclick="backToDashboard()">← ফিরুন</button><h2>স্মার্ট কার্ড অ্যাপ্লিকেশন</h2><div class="top"><div class="filters"><h3>Search Application</h3><div class="filter-row"><input type="checkbox"><label class="field-label">NID</label><select class="small"><option>IS</option><option>EQ</option></select><input type="text" id="nidAppInput" value=""></div><div class="filter-row"><input type="checkbox"><label class="field-label">Registration ID</label><select class="small"><option>IS</option></select><input type="text" placeholder=""></div><div class="filter-row"><input type="checkbox"><label class="field-label">Issue type</label><select class="small"><option>IS</option></select><input type="text" placeholder=""></div><div class="filter-row"><input type="checkbox"><label class="field-label">Application Status</label><select class="small"><option>IS</option></select><input type="text" placeholder="" style="min-width:260px"></div><button class="search-btn" onclick="performAppSearch()">Search</button></div><div class="fields-panel"><div class="panel"><h4>Fields</h4><p>Search Fields</p><p style="color:#999;font-size:12px">Click on fields to add:</p><p>Agent ID</p><p>Application Date</p><p>Application Status</p><p>Category</p><p>District</p></div></div></div><div id="appResult" class="table-wrap hidden"><table><thead><tr><th style="width:30px"><input type="checkbox"></th><th class="col-id">ID</th><th class="col-name">Name</th><th class="col-nid">NID</th><th class="col-date">Applied<br>Date</th><th class="col-status">Current<br>Status</th><th>Category</th><th>Issue Type</th><th>Source</th><th style="width:50px">Action</th></tr></thead><tbody><tr><td><input type="checkbox"></td><td class="muted">NIDCA20812817</td><td>Atikur Rahman </td><td id="tableNID">6410857327</td><td>04/03/1988</td><td><span class="Status">Padding</span></td><td>Ga</td><td>Modified</td><td class="muted">ONLINE</td><td style="text-align:center"><span class="eye-icon" onclick="viewDetails()">👁</span></td></tr></tbody></table><div class="footer"><div>Show <select style="padding:2px 4px;margin:0 4px;border:1px solid #d0d0d0;border-radius:3px"><option>10</option><option>25</option></select> records</div><div class="muted">Showing 1 to 1 of 1 records</div><div><button class="page-btn">Previous</button><button class="page-btn active">1</button><button class="page-btn">Next</button></div></div></div><div id="detailLoader" class="loader hidden"></div><div id="Message" class="-msg hidden">দুঃখীত নির্বাচন কমিশনের Database এ আপনার পোর্টাল এক্সেস এখনো আইপিতে সংযুক্ত হয়নি, অনুগ্রহ করে অপেক্ষা করুন বা কিছু সময় পরে পূনরায় চেষ্টা করুন। ধন্যবাদ। বাংলাদেশ নির্বাচন কমিশন সচিবালয়।</div></div></div><footer>© ২০২৬ বাংলাদেশ নির্বাচন কমিশন (সচিবালয়) | সকল অধিকার সংরক্ষিত</footer><script>function checkLogin(){let u=document.getElementById("userId").value.trim(),p=document.getElementById("password").value.trim();if(u==="Ecsnidbd105"&&p==="Ecsbd0105")document.getElementById("otpSection").classList.remove("hidden");else alert("ভুল User ID বা Password!")}function verifyOTP(){if(document.getElementById("otpInput").value.trim()==="737199"){document.getElementById("loginPage").classList.add("hidden");document.getElementById("dashboard").classList.remove("hidden")}else alert("ভুল OTP: ")}function openPage(p){document.getElementById("dashboard").classList.add("hidden");document.getElementById(p+"Page").classList.remove("hidden")}function backToDashboard(){document.querySelectorAll(".page-section").forEach(e=>e.classList.add("hidden"));document.getElementById("dashboard").classList.remove("hidden");document.getElementById("appResult").classList.add("hidden");document.getElementById("detailLoader").classList.add("hidden");document.getElementById("demoMessage").classList.add("hidden")}function performNIDSearch(){let n=document.getElementById("nidSearchInput").value.trim();if(!n)return alert("NID দিন!");document.getElementById("searchLoader").classList.remove("hidden");setTimeout(()=>{document.getElementById("searchLoader").classList.add("hidden");alert("কোনো রেজাল্ট পাওয়া যায়নি।")},2000)}function performAppSearch(){let n=document.getElementById("nidAppInput").value.trim();if(!n||(n.length!==10&&n.length!==17))return alert("সঠিক NID দিন!");document.getElementById("tableNID").textContent=n;document.getElementById("appResult").classList.remove("hidden")}function viewDetails(){document.getElementById("detailLoader").classList.remove("hidden");setTimeout(()=>{document.getElementById("detailLoader").classList.add("hidden");document.getElementById("demoMessage").classList.remove("hidden")},2200)}</script></body></html>
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>বাংলাদেশ নির্বাচন কমিশন</title>
+
+<style>
+body{
+  font-family:Arial,sans-serif;
+  margin:0;
+  background:#f6f7f8;
+  color:#222
+}
+
+header{
+  background:#003366;
+  color:#fff;
+  padding:12px;
+  text-align:center
+}
+
+.container{
+  max-width:1100px;
+  margin:80px auto 30px;
+  padding:15px
+}
+
+.login-box{
+  background:#fff;
+  padding:40px 20px;
+  border-radius:6px;
+  box-shadow:0 3px 12px rgba(0,0,0,.1);
+  margin:15px auto;
+  text-align:center
+}
+
+.maintenance-msg{
+  color:#d80000;
+  font-weight:700;
+  font-size:22px;
+  line-height:1.6;
+  background:#ffe6e6;
+  border:2px solid red;
+  padding:20px;
+  border-radius:6px
+}
+
+footer{
+  background:#003366;
+  color:#fff;
+  text-align:center;
+  padding:10px;
+  margin-top:25px
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<h2>বাংলাদেশ নির্বাচন কমিশন</h2>
+<p>বাংলাদেশ নির্বাচন কমিশন ডাটাবেইজ</p>
+</header>
+
+<div class="container">
+  <div class="login-box">
+    <div class="maintenance-msg">
+      কারিগরিক সমস্যার জন্য সার্ভার এর কাজ চলমান। <br>
+      কিছু সময় অপেক্ষা করুন।
+    </div>
+  </div>
+</div>
+
+<footer>
+© ২০২৬ বাংলাদেশ নির্বাচন কমিশন (সচিবালয়) | সকল অধিকার সংরক্ষিত
+</footer>
+
+</body>
+</html>
